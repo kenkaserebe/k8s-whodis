@@ -1,0 +1,14 @@
+k8s-whodis/
+|---html/
+|   |---index.html          # The static webpage with "Hello from [pod name/hostname]"
+|
+|---k8s
+|   |---namespace.yaml      # Kubernetes namespace for this project
+|   |---deployment.yaml     # Pod template, replicas, container spec, probes
+|   |---service.yaml        # Internal service to expose the deployment
+|   |---ingress.yaml        # External access (to make it public)
+|
+|---Dockerfile              # Container build instructions
+|---.dockerignore           # Exclude local files from Docker build context
+|---.gitignore              # Exclude sensitive files from GitHub
+|---README.md               # Project documentation

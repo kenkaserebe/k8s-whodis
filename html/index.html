@@ -1,0 +1,142 @@
+# k8s-whodis/html/index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>k8s-whodis - Container Greeter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-sefif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem 4rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .device-info {
+            font-size: 2rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 1rem;
+        }
+
+        .pod-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="pod-icon">🐳 ➡️ 🎯</div>
+        <h1>Hello from</h1>
+        <div class="device-info" id="hostname">
+        Loading...
+        </div>
+        <div class="subtitle">
+       ✨ Kubernetes Pod ✨
+        </div>
+        <div class="footer">
+            k8s-whodis | Container Greeter
+        </div>
+    </div>
+
+    <script>
+        // Method 1: Get pod hostname (container's hostname = pod name in K8s)
+        function getHostname() {
+            return window.location.hostname;
+        }
+
+        // Method 2: Fetch from server-side endpoint (if nginx exposes hostname)
+        async function fetchServerHostname() {
+            try {
+                const response = await fetch('/hostname');
+                const data = await response.text();
+                return data;
+            } catch (e) {
+                return getHostname();
+            }
+        }
+
+        // Display hostname
+        async function displayHostname() {
+            const hostnameElement = document.getElementById('hostname');
+
+            // Try to get server hostname via API, fallback to window.location
+            let hostname = getHostname();
+
+            // If it looks like an IP address or domain, we want the pod name
+            // In Kubernetes, the pod name is the container's hostname
+            // For nginx, we can also read from an env var exposed via a custom endpoint
+
+            hostnameElement.textContent = hostname;
+
+            // Add a little animation/effect
+            hostnameElement.style.opacity = '0';
+            setTimeout(() => {
+                hostnameElement.style.transition = 'opacity 0.5s';
+                hostnameElement.style.opacity = '1';
+            }, 100);
+        }
+
+        // Also display the full pod info if available via additional fetch
+        async function enrichWithPodInfo() {
+            try {
+                // Optional: Try to get more pod info from a status endpoint
+                // This would require a backend endpoint, but for static HTML
+                // we'll just use what we have
+                const response = await fetch('/pod-info', { method: 'HEAD'}).catch(() => null);
+                if (response && response.headers.get('X-Pod-Name')) {
+                    document.getElementById('hostname').textContent = response.headers.get('X-Pod-Name');
+                }
+            } catch (e) {
+                // Silently fail, already showing hostname
+            }
+        }
+
+        displayHostname();
+    </script>
+</body>
+</html>
