@@ -1,0 +1,25 @@
+# Git files
+.git/
+.gitignore
+
+# Kubernetes manifests (don't need in image)
+k8s/
+
+# README and docs
+README.md
+*.md
+
+# Local development files
+.vscode/
+.idea/
+*.swp
+*.tmp
+
+# Docker files
+Dockerfile
+.dockerignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+Jenkinsfile
