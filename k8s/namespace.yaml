@@ -1,0 +1,9 @@
+# k8s-whodis/k8s/namespace.yaml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: k8s-whodis
+  labels:
+    app: k8s-whodis
+    environment: development

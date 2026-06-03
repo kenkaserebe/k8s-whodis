@@ -1,0 +1,75 @@
+# k8s-whodis/k8s/ingress.yaml
+
+########## SIMPLE INGRESS VERSION ###############
+
+# # Uncomment and use if you DONT have an Ingress Controller
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: k8s-whodis
+#   namespace: k8s-whodis
+# spec:
+#   rules:
+#   - host: k8s-whodis.local
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: k8s-whodis
+#             port:
+#               number: 80
+
+
+########### WITH INGRESS CONTROLLER #############
+# UPDATE DOMAIN BEFORE USE
+#################################################
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8s-whodis
+  namespace: k8s-whodis
+  annotations:
+    # For NGINX Ingress Controller
+    kubernetes.io/ingress.class: traefik
+    # For Traefik to route based on path only (no host required)
+    # traefik.ingress.kubernetes.io/router.middlewares: ""
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /whodis
+            pathType: Prefix
+            backend:
+              service:
+                name: k8s-whodis
+                port:
+                  number: 80
+
+# http://localhost/whodis
+
+
+######### USING NODEPORT #####################
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: k8s-whodis
+#   namespace: k8s-whodis
+#   labels:
+#     app: k8s-whodis
+# spec:
+#   selector:
+#     app: k8s-whodis
+#   ports:
+#   - port: 80
+#     targetPort: 80
+#     protocol: TCP
+#     name: http
+#     nodePort: 30080
+#   type: NodePort
+
+
+# Then access via: http://<your-node-ip>:30080

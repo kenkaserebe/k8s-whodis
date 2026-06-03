@@ -1,0 +1,18 @@
+# k8s-whodis/k8s/service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-whodis
+  namespace: k8s-whodis
+  labels:
+    app: k8s-whodis
+spec:
+  selector:
+    app: k8s-whodis
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  type: ClusterIP
