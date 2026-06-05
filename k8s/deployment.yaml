@@ -17,9 +17,11 @@ spec:
       labels:
         app: k8s-whodis
     spec:
+      nodeSelector:    # Remember to "kubectl label nodes laptop-worker-1 role=worker"
+        role: worker
       containers:
         - name: web-server
-          image: docker.io/ken0k/k8s-whodis:v1.0.1
+          image: docker.io/ken0k/k8s-whodis:v1.0.2
           imagePullPolicy: Always
           ports:
             - containerPort: 80

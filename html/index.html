@@ -104,14 +104,14 @@
         async function displayHostname() {
             const hostnameElement = document.getElementById('hostname');
 
-            // Try to get server hostname via API, fallback to window.location
-            let hostname = getHostname();
-
-            // If it looks like an IP address or domain, we want the pod name
-            // In Kubernetes, the pod name is the container's hostname
-            // For nginx, we can also read from an env var exposed via a custom endpoint
-
-            hostnameElement.textContent = hostname;
+            try {
+                // Fetch the real pod hostname from nginx endpoint
+                const response = await fetch('/hostname');
+                const hostname = await response.text();
+            } catch (error) {
+                // Fallback: use the X-Pod-Name header or window.location
+                hostnameElement.textContent = window.location.hostname;
+            }
 
             // Add a little animation/effect
             hostnameElement.style.opacity = '0';
@@ -121,20 +121,20 @@
             }, 100);
         }
 
-        // Also display the full pod info if available via additional fetch
-        async function enrichWithPodInfo() {
-            try {
-                // Optional: Try to get more pod info from a status endpoint
-                // This would require a backend endpoint, but for static HTML
-                // we'll just use what we have
-                const response = await fetch('/pod-info', { method: 'HEAD'}).catch(() => null);
-                if (response && response.headers.get('X-Pod-Name')) {
-                    document.getElementById('hostname').textContent = response.headers.get('X-Pod-Name');
-                }
-            } catch (e) {
-                // Silently fail, already showing hostname
-            }
-        }
+        // // Also display the full pod info if available via additional fetch
+        // async function enrichWithPodInfo() {
+        //     try {
+        //         // Optional: Try to get more pod info from a status endpoint
+        //         // This would require a backend endpoint, but for static HTML
+        //         // we'll just use what we have
+        //         const response = await fetch('/pod-info', { method: 'HEAD'}).catch(() => null);
+        //         if (response && response.headers.get('X-Pod-Name')) {
+        //             document.getElementById('hostname').textContent = response.headers.get('X-Pod-Name');
+        //         }
+        //     } catch (e) {
+        //         // Silently fail, already showing hostname
+        //     }
+        // }
 
         displayHostname();
     </script>
