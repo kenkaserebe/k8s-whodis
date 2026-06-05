@@ -18,5 +18,12 @@ spec:
                 name: k8s-whodis
                 port:
                   number: 80
+          - path: /hostname
+            pathType: Exact
+            backend:
+              service:
+                name: k8s-whodis
+                port:
+                  number: 80
 
 # http://<ip-address>/whodis
