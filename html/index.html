@@ -108,6 +108,7 @@
                 // Fetch the real pod hostname from nginx endpoint
                 const response = await fetch('/hostname');
                 const hostname = await response.text();
+                hostnameElement.textContent = hostname.trim();
             } catch (error) {
                 // Fallback: use the X-Pod-Name header or window.location
                 hostnameElement.textContent = window.location.hostname;
@@ -120,21 +121,6 @@
                 hostnameElement.style.opacity = '1';
             }, 100);
         }
-
-        // // Also display the full pod info if available via additional fetch
-        // async function enrichWithPodInfo() {
-        //     try {
-        //         // Optional: Try to get more pod info from a status endpoint
-        //         // This would require a backend endpoint, but for static HTML
-        //         // we'll just use what we have
-        //         const response = await fetch('/pod-info', { method: 'HEAD'}).catch(() => null);
-        //         if (response && response.headers.get('X-Pod-Name')) {
-        //             document.getElementById('hostname').textContent = response.headers.get('X-Pod-Name');
-        //         }
-        //     } catch (e) {
-        //         // Silently fail, already showing hostname
-        //     }
-        // }
 
         displayHostname();
     </script>
