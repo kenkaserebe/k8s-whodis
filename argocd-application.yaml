@@ -1,4 +1,4 @@
-# k8s-whodis/argocd/argocd-application.yaml
+# k8s-whodis/argocd-application.yaml
 
 apiVersion: argoproj.io/v1alpha1
 kind: Application
