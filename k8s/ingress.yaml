@@ -19,13 +19,13 @@ spec:
               service:
                 name: k8s-whodis
                 port:
-                  number: 80
+                  number: 5000
           # - path: /hostname
           #   pathType: Exact
           #   backend:
           #     service:
           #       name: k8s-whodis
           #       port:
-          #         number: 80
+          #         number: 5000
 
-# http://<ip-address>/whodis
+# http://0.0.0.0:5000

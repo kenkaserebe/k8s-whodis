@@ -31,6 +31,18 @@
             text-align: center;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(0);
+            }
         }
 
         h1 {
@@ -45,9 +57,18 @@
             padding: 1rem;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
-            border-radius: 10px;
             font-family: 'Courier New', monospace;
             word-break: break-all;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
         }
 
         .subtitle {
@@ -72,57 +93,15 @@
     <div class="container">
         <div class="pod-icon">🐳 ➡️ 🎯</div>
         <h1>Hello from</h1>
-        <div class="device-info" id="hostname">
-        Loading...
+        <div class="device-info">
+            {{ hostname }}
         </div>
         <div class="subtitle">
-       ✨ Kubernetes Pod ✨
+            ✨ Kubernetes Pod ✨
         </div>
         <div class="footer">
-            k8s-whodis | Container Greeter
+            k8s-whodis | Container Greeter | Python + Flask
         </div>
     </div>
-
-    <script>
-        // Method 1: Get pod hostname (container's hostname = pod name in K8s)
-        function getHostname() {
-            return window.location.hostname;
-        }
-
-        // Method 2: Fetch from server-side endpoint (if nginx exposes hostname)
-        async function fetchServerHostname() {
-            try {
-                const response = await fetch('/hostname');
-                const data = await response.text();
-                return data;
-            } catch (e) {
-                return getHostname();
-            }
-        }
-
-        // Display hostname
-        async function displayHostname() {
-            const hostnameElement = document.getElementById('hostname');
-
-            try {
-                // Fetch the real pod hostname from nginx endpoint
-                const response = await fetch('/hostname');
-                const hostname = await response.text();
-                hostnameElement.textContent = hostname.trim();
-            } catch (error) {
-                // Fallback: use the X-Pod-Name header or window.location
-                hostnameElement.textContent = window.location.hostname;
-            }
-
-            // Add a little animation/effect
-            hostnameElement.style.opacity = '0';
-            setTimeout(() => {
-                hostnameElement.style.transition = 'opacity 0.5s';
-                hostnameElement.style.opacity = '1';
-            }, 100);
-        }
-
-        displayHostname();
-    </script>
 </body>
 </html>

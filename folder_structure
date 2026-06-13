@@ -1,5 +1,5 @@
 k8s-whodis/
-|---html/
+|---templates/
 |   |---index.html          # The static webpage with "Hello from [pod name/hostname]"
 |
 |---k8s/
@@ -8,6 +8,7 @@ k8s-whodis/
 |   |---service.yaml        # Internal service to expose the deployment
 |   |---ingress.yaml        # External access (to make it public)
 |
+|---app.py
 |---argocd-application.yaml
 |---Dockerfile              # Container build instructions
 |---.dockerignore           # Exclude local files from Docker build context
