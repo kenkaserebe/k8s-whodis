@@ -80,34 +80,42 @@ kubectl get ingress -n k8s-whodis
 
 #### 4. Access the Application
 - Direct Pod Access (port-forward):
+
 '''bash
+
 kubectl port-forward -n k8s-whodis deployment/k8s-whodis 5000:5000
 ###### Then open http://localhost:5000
 
 - Via Ingress (if Traefik is configured):
+
 '''bash
+
 curl http://192.168.1.15/   # Replace with your ingress IP
 
 
 ### 🔧 Configuration
 
-##### Node Label Requirement
+#### Node Label Requirement
 
 The deployment uses nodeSelector to schedule pods on worker nodes with the label role=worker:
+
 '''bash
+
 kubectl label nodes <your-worker-node> role=worker
 
 
-##### Environment Variables
+#### Environment Variables
 
 You can override the display pod name by adding to deployment.yaml:
+
 '''yaml
+
 env:
     -   name: POD_NAME
         value: "custom-name"
 
 
-##### Resource Limits
+#### Resource Limits
 
 Current defaults (adjust in deployment.yaml):
 
@@ -121,7 +129,7 @@ limits:
     cpu: "200m"
 
 
-# Endpoints
+##### Endpoints
 
 Endpoint                        Method                  Description
 ----------------------------------------------------------------------------------------------
@@ -131,34 +139,36 @@ Endpoint                        Method                  Description
 ----------------------------------------------------------------------------------------------
 
 
-#### 🐳 Building the Container Image
+### 🐳 Building the Container Image
 
 If you want to modify the application:
 
 '''bash
 
-# Build image
+#### Build image
 docker build -t your-registry/k8s-whodis:python-v1 .
 
-# Push to registry
+#### Push to registry
 docker push your-registry/k8s-whodis:python-v1
 
-# Update deployment.yaml image field
+#### Update deployment.yaml image field
 
 Current image: docker.io/ken0k/k8s-whodis:python-v1
 
 
 
-#### 📊 Monitoring with Prometheus & Grafana
+### 📊 Monitoring with Prometheus & Grafana
 
-# Add Metrics Endpoint (Optional Enhancement)
+#### Add Metrics Endpoint (Optional Enhancement)
 
 To collect metrics, add this to app.py:
 
 '''python
 
 from prometheus_flask_exporter import PrometheusMetrics
+
 metrics = PrometheusMetrics(app)
+
 metrics.info('app_info', 'Application info', version='1.0.0')
 
 
@@ -167,33 +177,47 @@ Then add a ServiceMonitor for Prometheus:
 '''yaml
 
 apiVersion: monitoring.coreos.com/v1
+
 kind: ServiceMonitor
+
 metadata:
+
     name: k8s-whodis
+
 spec:
+
     selector:
+
         matchLabels:
+
             app: k8s-whodis
+
     endpoints:
+
         -   port: http
+
             path: /metrics
 
 
-### Test Load Balancing
+#### Test Load Balancing
 
 Generate traffic to see pod distribution:
 
 '''bash
 
-# Continuous requests to see different pod names
+#### Continuous requests to see different pod names
+
 while true; do
+
     curl http://192.168.1.15/hostname
+
     sleep 1
+
 done
 
 
 
-#### 🔄 ArgoCD Deployment
+### 🔄 ArgoCD Deployment
 
 The repository includes an ArgoCD Application manifest:
 
@@ -202,7 +226,7 @@ The repository includes an ArgoCD Application manifest:
 kubectl apply -f argocd-application.yaml
 
 
-## Sync Policy Features:
+#### Sync Policy Features:
 
 - Automated sync with prune & self-heal
 - Creates namespace automatically
@@ -210,7 +234,7 @@ kubectl apply -f argocd-application.yaml
 - Retains 5 revision history
 
 
-#### 🧪 Testing Your Monitoring Stack
+### 🧪 Testing Your Monitoring Stack
 
 With k8s-whodis you can validate:
 
@@ -222,31 +246,45 @@ With k8s-whodis you can validate:
 6. ArgoCD Sync - Test GitOps reconciliation
 
 
-#### 📁 Project Structure
+### 📁 Project Structure
 
 
-# k8s-whodis/folder_structure
+### k8s-whodis/folder_structure
 
 k8s-whodis/
+
 |---templates/
+
 |   |---index.html          # The static webpage with "Hello from [pod name/hostname]"
+
 |
+
 |---k8s/
+
 |   |---namespace.yaml      # Kubernetes namespace for this project
+
 |   |---deployment.yaml     # Pod template, replicas, container spec, probes
+
 |   |---service.yaml        # Internal service to expose the deployment
+
 |   |---ingress.yaml        # External access (to make it public)
+
 |
+
 |---app.py
+
 |---argocd-application.yaml
+
 |---Dockerfile              # Container build instructions
+
 |---requirements.txt        # Python dependencys to be installed
+
 |---README.md               # Project documentation
 
 
-#### Troubleshooting
+### Troubleshooting
 
-Issue                           Solution
+Issue                                      Solution
 -----------------------------------------------------------------------------------------------
 Pods stuck in Pending           Check node selector labels:
                                 kubectl get nodes --show-labels
