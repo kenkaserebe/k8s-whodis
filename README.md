@@ -284,7 +284,7 @@ k8s-whodis/
 
 ### Troubleshooting
 
-Issue                                      Solution
+Issue                           Solution
 -----------------------------------------------------------------------------------------------
 Pods stuck in Pending           Check node selector labels:
                                 kubectl get nodes --show-labels
@@ -302,18 +302,18 @@ Liveness probe failing          Check if port 5000 is exposed and / endpoint res
 
 '''bash
 
-# Check pod logs
+##### Check pod logs
 kubectl logs -n k8s-whodis -l app=k8s-whodis
 
-# Describe pod for events
+##### Describe pod for events
 kubectl describe pod -n k8s-whodis -l app=k8s-whodis
 
-# Port forward for direct testing
+##### Port forward for direct testing
 kubectl port-forward -n k8s-whodis svc/k8s-whodis 5000:5000
 
 
 
-#### 🤝 Contributing
+### 🤝 Contributing
 
 This is a testing/demo project, but contributions are welcome!
 
@@ -324,7 +324,7 @@ This is a testing/demo project, but contributions are welcome!
 5. Open a Pull Request
 
 
-#### 🙏 Acknowledgements
+### 🙏 Acknowledgements
 
 - Built with [Flask](https://flask.palletsprojects.com/)
 - Deployed on [Kubernetes](https://kubernetes.io/)
@@ -333,7 +333,7 @@ This is a testing/demo project, but contributions are welcome!
 - Managed via [ArgoCD](https://argoproj.github.io/cd/)
 
 
-#### 📬 Contact
+### 📬 Contact
 
 Project Link: https://github.com/kenkaserebe/k8s-whodis
 
