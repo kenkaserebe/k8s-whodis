@@ -13,6 +13,7 @@ k8s-whodis/
 |---app.py
 |---argocd-application.yaml
 |---Dockerfile              # Container build instructions
+|---requirements.txt        # Python dependencys to be installed
 |---.dockerignore           # Exclude local files from Docker build context
 |---.gitignore              # Exclude sensitive files from GitHub
 |---README.md               # Project documentation
