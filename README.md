@@ -23,9 +23,13 @@ k8s-whodis is a lightweight Python Flask application that displays the pod hostn
 ## 🏗️ Architecture
 
 User → Ingress (Traefik) → Service (ClusterIP) → Pods (2 replicas)
+
 ↓
+
 Flask App on port 5000
+
 ↓
+
 Returns Pod Hostname
 
 ---
