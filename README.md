@@ -1,4 +1,4 @@
-# k8s-whodis/README.md
+##### k8s-whodis/README.md
 
 # k8s-whodis 🐳 ➡️ 🎯
 
@@ -8,7 +8,7 @@ k8s-whodis is a lightweight Python Flask application that displays the pod hostn
 
 ---
 
-#### ✨ Features
+## ✨ Features
 
 - **Pod Identification** - Displays its own Kubernetes pod name/hostname on a modern web UI
 - **Health Checks** - Built-in liveness & readiness probes for Kubernetes
@@ -20,7 +20,7 @@ k8s-whodis is a lightweight Python Flask application that displays the pod hostn
 
 ---
 
-#### 🏗️ Architecture
+## 🏗️ Architecture
 
 User → Ingress (Traefik) → Service (ClusterIP) → Pods (2 replicas)
 ↓
@@ -30,7 +30,7 @@ Returns Pod Hostname
 
 ---
 
-#### 📋 Prerequisites
+## 📋 Prerequisites
 
 - Kubernetes cluster (v1.20+)
 - 'kubectl' configured with cluster access
@@ -40,9 +40,9 @@ Returns Pod Hostname
 
 ---
 
-#### 🚀 Quick Start
+### 🚀 Quick Start
 
-### 1. Clone the Repository
+#### 1. Clone the Repository
 
 '''bash
 
@@ -50,61 +50,57 @@ git clone https://github.com/kenkaserebe/k8s-whodis.git
 cd k8s-whodis
 
 
-### 2. Apply Kubernetes Manifests
+#### 2. Apply Kubernetes Manifests
 
-# Create namespace and all resources
+##### Create namespace and all resources
 kubectl apply -f k8s/namespace.yaml
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
 kubectl apply -f k8s/ingress.yaml
 
 
-### 3. Verify Deployment
+#### 3. Verify Deployment
 
-# Check pods are running
+##### Check pods are running
 kubectl get pods -n k8s-whodis
 
-# Check service endpoints
+##### Check service endpoints
 kubectl get svc -n k8s-whodis
 
-# Check ingress
+##### Check ingress
 kubectl get ingress -n k8s-whodis
 
 
-### 4. Access the Application
-    - Direct Pod Access (port-forwar):
-        '''bash
-        kubectl port-forward -n k8s-whodis deployment/k8s-whodis 5000:5000
-        # Then open http://localhost:5000
+#### 4. Access the Application
+- Direct Pod Access (port-forward):
+'''bash
+kubectl port-forward -n k8s-whodis deployment/k8s-whodis 5000:5000
+###### Then open http://localhost:5000
 
-    - Via Ingress (if Traefik is configured):
-        '''bash
-        curl http://192.168.1.15/   # Replace with your ingress IP
+- Via Ingress (if Traefik is configured):
+'''bash
+curl http://192.168.1.15/   # Replace with your ingress IP
 
 
-#### 🔧 Configuration
+### 🔧 Configuration
 
-# Node Label Requirement
+##### Node Label Requirement
 
 The deployment uses nodeSelector to schedule pods on worker nodes with the label role=worker:
-
 '''bash
-
 kubectl label nodes <your-worker-node> role=worker
 
 
-# Environment Variables
+##### Environment Variables
 
 You can override the display pod name by adding to deployment.yaml:
-
 '''yaml
-
 env:
     -   name: POD_NAME
         value: "custom-name"
 
 
-# Resource Limits
+##### Resource Limits
 
 Current defaults (adjust in deployment.yaml):
 
