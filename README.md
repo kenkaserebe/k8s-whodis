@@ -4,7 +4,7 @@
 
 k8s-whodis is a lightweight Python Flask application that displays the pod hostname (container ID) on a stylish webpage. It's designed specifically to help you validate monitoring stacks, load balancing, and Kubernetes deployments - perfect for testing Prometheus metrics collection, Grafana dashboards, and ArgoCD sync policies.
 
-![Demo](https://img.shields.io/badge/Kubernetes-1.20+-blue?logo=kubernetes)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-1.20+-blue?logo=kubernetes)
 ![Python](https://img.shields.io/badge/Python-3.9+-green?logo=python)
 ![Flask](https://img.shields.io/badge/Flask-3.1.3-lightgrey?logo=flask)
 ![ArgoCD](https://img.shields.io/badge/ArgoCD-Compatible-orange?logo=argocd)
